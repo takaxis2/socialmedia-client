@@ -13,7 +13,8 @@ const Conversation = ({ data, currentUser, online }) => {
     const getUserData = async ()=> {
       try
       {
-          const {data} =await getUser(userId)
+        
+         const {data} =await getUser(userId)
          setUserData(data)
          dispatch({type:"SAVE_USER", data:data})
       }
@@ -37,7 +38,7 @@ const Conversation = ({ data, currentUser, online }) => {
             style={{ width: "50px", height: "50px" }}
           />
           <div className="name" style={{fontSize: '0.8rem'}}>
-            <span>{userData?.firstname} {userData?.lastname}</span>
+            <span>{userData?.firstName} {userData?.lastName}</span>
             <span style={{color: online?"#51e200":""}}>{online? "Online" : "Offline"}</span>
           </div>
         </div>

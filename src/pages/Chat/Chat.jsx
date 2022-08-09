@@ -23,28 +23,31 @@ const Chat = () => {
   useEffect(() => {
     const getChats = async () => {
       try {
-        const { data } = await userChats(user._id);
+        const { data } = await userChats(user.id);
         setChats(data);
       } catch (error) {
         console.log(error);
       }
     };
     getChats();
-  }, [user._id]);
+  }, [user.id]);
 
   // Connect to Socket.io
   useEffect(() => {
     socket.current = io("ws://localhost:8800");
-    socket.current.emit("new-user-add", user._id);
+    socket.current.emit("new-user-add", user.id);
     socket.current.on("get-users", (users) => {
       setOnlineUsers(users);
+      console.log(user);
     });
   }, [user]);
 
   // Send Message to socket server
   useEffect(() => {
     if (sendMessage!==null) {
-      socket.current.emit("send-message", sendMessage);}
+      console.log('send-message-emitted')
+      socket.current.emit("send-message", sendMessage);
+    }
   }, [sendMessage]);
 
 
@@ -60,7 +63,7 @@ const Chat = () => {
 
 
   const checkOnlineStatus = (chat) => {
-    const chatMember = chat.members.find((member) => member !== user._id);
+    const chatMember = chat.members.find((member) => member !== user.id);
     const online = onlineUsers.find((user) => user.userId === chatMember);
     return online ? true : false;
   };
@@ -81,7 +84,7 @@ const Chat = () => {
               >
                 <Conversation
                   data={chat}
-                  currentUser={user._id}
+                  currentUser={user.id}
                   online={checkOnlineStatus(chat)}
                 />
               </div>
@@ -98,7 +101,7 @@ const Chat = () => {
         </div>
         <ChatBox
           chat={currentChat}
-          currentUser={user._id}
+          currentUser={user.id}
           setSendMessage={setSendMessage}
           receivedMessage={receivedMessage}
         />

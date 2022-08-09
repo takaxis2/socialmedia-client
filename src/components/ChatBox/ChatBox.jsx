@@ -34,7 +34,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
   useEffect(() => {
     const fetchMessages = async () => {
       try {
-        const { data } = await getMessages(chat._id);
+        const { data } = await getMessages(chat.id);
         setMessages(data);
       } catch (error) {
         console.log(error);
@@ -58,7 +58,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
     const message = {
       senderId : currentUser,
       text: newMessage,
-      chatId: chat._id,
+      chatId: chat.id,
   }
   const receiverId = chat.members.find((id)=>id!==currentUser);
   // send message to socket server
@@ -78,7 +78,7 @@ const ChatBox = ({ chat, currentUser, setSendMessage,  receivedMessage }) => {
 // Receive Message from parent component
 useEffect(()=> {
   console.log("Message Arrived: ", receivedMessage)
-  if (receivedMessage !== null && receivedMessage.chatId === chat._id) {
+  if (receivedMessage !== null && receivedMessage.chatId === chat.id) {
     setMessages([...messages, receivedMessage]);
   }
 
@@ -111,7 +111,7 @@ useEffect(()=> {
                   />
                   <div className="name" style={{ fontSize: "0.9rem" }}>
                     <span>
-                      {userData?.firstname} {userData?.lastname}
+                      {userData?.firstName} {userData?.lastName}
                     </span>
                   </div>
                 </div>
